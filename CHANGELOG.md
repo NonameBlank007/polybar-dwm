@@ -26,7 +26,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 >>>>>>> ab583b08 (fix(tray): Clients not being removed properly)
 =======
 - `custom/ipc`: Module would display the literal `%output%` token before the initial hook finished executing ([`#3131`](https://github.com/polybar/polybar/issues/3131), [`#3140`](https://github.com/polybar/polybar/pull/3140))
+<<<<<<< HEAD
 >>>>>>> 4d175845 (fix(ipc): Clear output until initial hook finishes)
+=======
+- renderer: Pseudo-transparency rendering artifacts when wallpaper does not fill entire screen ([`#3096`](https://github.com/polybar/polybar/pull/3096), [`#3041`](https://github.com/polybar/polybar/issues/3041))
+>>>>>>> c0d3d7a3 (fix(render): Deal with incomplete wallpapers)
 
 ## [3.7.1] - 2023-11-27
 ### Build
