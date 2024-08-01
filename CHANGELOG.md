@@ -22,7 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 >>>>>>> 8e04f15e (fix(backlight): %backlight% token appearing on the bar (#3081))
 =======
 - `internal/tray`: Fix crash during restarting, when tray icons were not removed proberly ([`#3111`](https://github.com/polybar/polybar/issues/3111), [`#3112`](https://github.com/polybar/polybar/pull/3112))
+<<<<<<< HEAD
 >>>>>>> ab583b08 (fix(tray): Clients not being removed properly)
+=======
+- `custom/ipc`: Module would display the literal `%output%` token before the initial hook finished executing ([`#3131`](https://github.com/polybar/polybar/issues/3131), [`#3140`](https://github.com/polybar/polybar/pull/3140))
+>>>>>>> 4d175845 (fix(ipc): Clear output until initial hook finishes)
 
 ## [3.7.1] - 2023-11-27
 ### Build
