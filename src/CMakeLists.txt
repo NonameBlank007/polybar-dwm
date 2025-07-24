@@ -165,6 +165,7 @@ target_link_libraries(poly PUBLIC
   Cairo::CairoFC
   xpp
   LibUV::LibUV
+  freetype
   )
 
 if (TARGET i3ipc++)
