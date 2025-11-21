@@ -75,6 +75,7 @@ void manager::setup(const config& conf, const string& section_name) {
   m_opts.foreground = conf.get(section_name, "tray-foreground", m_bar_opts.foreground);
 
   m_opts.selection_owner = m_bar_opts.x_data.window;
+  m_opts.reversed = conf.get(section_name, "tray-reversed", m_opts.reversed);
 
   m_log.info("tray: spacing=%upx padding=%upx size=%upx", m_opts.spacing, m_opts.padding, client_height);
 
@@ -250,7 +251,7 @@ void manager::reconfigure_clients() {
 
   unsigned count = 0;
 
-  for (auto& client : m_clients) {
+  auto reconfigure_client = [&] (auto& client) {
     try {
       client->ensure_state();
 
@@ -266,6 +267,16 @@ void manager::reconfigure_clients() {
       m_log.err("Failed to reconfigure %s, removing ... (%s)", client->name(), err.what());
       client.reset();
       has_error = true;
+    }
+  };
+
+  if (m_opts.reversed) {
+    for (auto it = m_clients.rbegin(); it != m_clients.rend(); ++it) {
+      reconfigure_client(*it);
+    }
+  } else {
+    for (auto it = m_clients.begin(); it != m_clients.end(); ++it) {
+      reconfigure_client(*it);
     }
   }
 
@@ -502,7 +513,8 @@ void manager::remove_client(const client& c) {
 void manager::remove_client(xcb_window_t win) {
   auto old_size = m_clients.size();
   m_clients.erase(
-      std::remove_if(m_clients.begin(), m_clients.end(), [win](const auto& client) { return client->match(win); }));
+      std::remove_if(m_clients.begin(), m_clients.end(), [win](const auto& client) { return client->match(win); }),
+      m_clients.end());
 
   if (old_size != m_clients.size()) {
     reconfigure();
@@ -518,7 +530,8 @@ void manager::remove_client(xcb_window_t win) {
  */
 void manager::clean_clients() {
   m_clients.erase(
-      std::remove_if(m_clients.begin(), m_clients.end(), [](const auto& client) { return client.get() == nullptr; }));
+      std::remove_if(m_clients.begin(), m_clients.end(), [](const auto& client) { return client.get() == nullptr; }),
+      m_clients.end());
 }
 
 bool manager::change_visibility(bool visible) {

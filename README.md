@@ -11,7 +11,7 @@ A fast and easy-to-use tool for creating status bars.
 <a href="https://github.com/polybar/polybar/releases"><img src="https://img.shields.io/github/release/polybar/polybar.svg"></a>
 <a href="https://github.com/polybar/polybar/releases"><img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/polybar/polybar/total" /></a>
 <a href="https://github.com/polybar/polybar/actions?query=workflow%3ACI"><img src="https://github.com/polybar/polybar/workflows/CI/badge.svg"></a>
-<a href="https://github.com/polybar/polybar/actions?query=workflow%3A%22Release+Workflow%22"><img src="https://github.com/polybar/polybar/workflows/Release%20Workflow/badge.svg?branch=master"></a>
+<a href="https://github.com/polybar/polybar/actions?query=workflow%3A%22Release+Workflow%22"><img src="https://github.com/polybar/polybar/workflows/Release%20Workflow/badge.svg"></a>
 <a href="https://polybar.readthedocs.io"><img src="https://readthedocs.org/projects/polybar/badge/?version=latest"></a>
 <a href="https://gitter.im/polybar/polybar"><img src="https://badges.gitter.im/polybar/polybar.svg"></a>
 <a href="https://codecov.io/gh/polybar/polybar/branch/master"><img src="https://codecov.io/gh/polybar/polybar/branch/master/graph/badge.svg"></a>
@@ -100,7 +100,7 @@ If you are using **Ubuntu** 20.10 (Groovy Gorilla) or later, you can install pol
 using `sudo apt install polybar`.
 
 If you are using **Arch Linux**, you can install
-[polybar](https://archlinux.org/packages/community/x86_64/polybar/) to get the
+[polybar](https://archlinux.org/packages/extra/x86_64/polybar/) to get the
 latest stable release using `sudo pacman -S polybar`. The latest unstable
 changes are also available in the
 [`polybar-git`](https://aur.archlinux.org/packages/polybar-git) package in the
@@ -116,11 +116,9 @@ If you are using **Slackware**, polybar is available from the [SlackBuilds](http
 
 If you are using **Source Mage GNU/Linux**, polybar spell is available in test grimoire and can be installed via `cast polybar`.
 
-If you are using **openSUSE Leap** or **openSUSE Tumbleweed**, polybar is available from the
-[official
-repositories](https://build.opensuse.org/package/show/X11:Utilities/polybar)
-and can be installed via `zypper install polybar`.
-The package is available for openSUSE Leap 15.3 and above.
+If you are using **openSUSE Leap** polybar is available from the
+[X11:Utilities](https://build.opensuse.org/package/show/X11:Utilities/polybar) repository or **openSUSE Tumbleweed** `polybar` is available from the official repositories and can be installed via `zypper`.
+The package is available for openSUSE Leap 15.5 and above.
 
 If you are using **FreeBSD**, [polybar](https://www.freshports.org/x11/polybar) can be installed using `pkg install polybar`. Make sure you are using the `latest` package branch.
 
