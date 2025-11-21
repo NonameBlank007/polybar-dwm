@@ -196,7 +196,8 @@ main() {
     -DENABLE_MPD:BOOL="${ENABLE_MPD}"         \
     -DENABLE_NETWORK:BOOL="${ENABLE_NETWORK}" \
     -DENABLE_CURL:BOOL="${ENABLE_CURL}"       \
-    -DBUILD_POLYBAR_MSG:BOOL="${ENABLE_IPC_MSG}"   \
+    -DBUILD_POLYBAR_MSG:BOOL="${ENABLE_IPC_MSG}" \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     .. || msg_err "Failed to generate build... read output to get a hint of what went wrong"
 
   msg "Building project"
