@@ -43,6 +43,7 @@ jobs:
             libxcb-image0-dev \
             libxcb-randr0-dev \
             libxcb-util0-dev \
+            libjsoncpp-dev \
             libxcb1-dev \
             libcairo2-dev \
             python3-xcbgen \
@@ -142,19 +143,19 @@ jobs:
           lcov --capture --no-external --directory . -o cov_tests.info
           lcov --add-tracefile cov_base.info --add-tracefile cov_tests.info -o cov_total.info
           lcov --remove cov_total.info "${PWD}/build/*" "${PWD}/tests/*" "${PWD}/lib/*" -o cov.info
-      - name: Upload Coverage
-        if: ${{ matrix.polybar_build_type == 'tests' }}
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unittests
+      # - name: Upload Coverage
+      #   if: ${{ matrix.polybar_build_type == 'tests' }}
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     flags: unittests
           # We provide our own coverage files
-          disable_search: true
+      #   disable_search: true
           # Disable all plugins, we handle all preparations ourselves
-          plugins: noop
-          files: ./cov.info
-          fail_ci_if_error: true
-          verbose: true
+      #     plugins: noop
+      #     files: ./cov.info
+      #     fail_ci_if_error: true
+      #    verbose: true
       - name: Upload Logs
         if: failure()
         uses: actions/upload-artifact@v4
