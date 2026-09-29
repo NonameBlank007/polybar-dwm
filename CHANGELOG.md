@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 >>>>>>> b3af5a33 (Version 3.7.2)
 =======
 ### Added
+- A tray module with type `internal/tray` for positioning the tray like a module ([`#2689`](https://github.com/polybar/polybar/issues/2689))
 - An option `unmute-on-scroll` for `internal/pulseaudio` and `internal/alsa` to unmute audio when the user scrolls on the widget.
 - `internal/battery`: Added `ramp-charging` tag.
 ([`#3172`](https://github.com/polybar/polybar/pull/3172))
@@ -86,8 +87,11 @@ by [@stringlapse](https://github.com/stringlapse).
   - `tray-position`, `tray-detached`, `tray-maxsize`, `tray-scale`, `tray-transparent`, `tray-background`, `tray-foreground`, `tray-padding`, `tray-offset-x`, `tray-offset-y`
 
 ### Added
-- A tray module with type `internal/tray` for positioning the tray like a module ([`#2689`](https://github.com/polybar/polybar/issues/2689))
-- `internal/temperature`: `%temperature-k%` token displays the temperature in Kelvin ([`#2774`](https://github.com/polybar/polybar/discussions/2774), [`#2784`](https://github.com/polybar/polybar/pull/2784))
+- Support for actions on hover via action numbers `9` and `10` ([`#1064`](https://github.com/polybar/polybar/issues/1064), [`#2868`](https://github.com/polybar/polybar/pull/2868)).
+- `custom/script`: `hover-start` and `hover-end` actions ([`#1064`](https://github.com/polybar/polybar/issues/1064), [`#2868`](https://github.com/polybar/polybar/pull/2868)).
+- Added support for TAG_LABEL (`<label>`) in ipc module  ([`#2841`](https://github.com/polybar/polybar/pull/2841))  by [@madhavpcm](https://github.com/madhavpcm).
+- Added support for format-i for each hook-i defined in ipc module ([`#2775`](https://github.com/polybar/polybar/issues/2775),  [`#2810`](https://github.com/polybar/polybar/pull/2810))  by [@madhavpcm](https://github.com/madhavpcm).
+- `internal/temperature`: `%temperature-k%` token displays the temperature in kelvin ([`#2774`](https://github.com/polybar/polybar/discussions/2774), [`#2784`](https://github.com/polybar/polybar/pull/2784))
 - `internal/pulseaudio`: `reverse-scroll` option ([`#2664`](https://github.com/polybar/polybar/pull/2664))
 - `custom/script`: Repeat interval for script failure (`interval-fail`) and `exec-if` (`interval-if`) ([`#943`](https://github.com/polybar/polybar/issues/943), [`#2606`](https://github.com/polybar/polybar/issues/2606), [`#2630`](https://github.com/polybar/polybar/pull/2630))
 - `custom/ipc`:
