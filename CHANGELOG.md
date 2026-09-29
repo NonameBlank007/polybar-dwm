@@ -9,17 +9,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 ### Added
 - An option `unmute-on-scroll` for `internal/pulseaudio` and `internal/alsa` to unmute audio when the user scrolls on the widget.
-=======
-=======
 
 ## [3.7.2] - 2024-08-17
->>>>>>> b3af5a33 (Version 3.7.2)
-=======
 ### Added
 - A tray module with type `internal/tray` for positioning the tray like a module ([`#2689`](https://github.com/polybar/polybar/issues/2689))
 - An option `unmute-on-scroll` for `internal/pulseaudio` and `internal/alsa` to unmute audio when the user scrolls on the widget.
@@ -33,31 +26,18 @@ by [@stringlapse](https://github.com/stringlapse).
 - When the `-r` flag is provided, and RandR reports zero connected active screens, polybar will not restart. This fixes polybar dying on some laptops when the lid is closed. ([`#3078`](https://github.com/polybar/polybar/pull/3078))).
 
 ## [3.7.2] - 2024-08-17
->>>>>>> 1ba083cdb2ee5516457b8a643104509d0746bf74
 ### Fixed
 - `custom/script`: When a script with `tail = true` received multiple lines quickly, only the first would get displayed ([`#3117`](https://github.com/polybar/polybar/issues/3117), [`#3119`](https://github.com/polybar/polybar/pull/3119)) by [@Isak05](https://github.com/Isak05)
 -  Token min-length calculations would behave differently when non-ASCII characters appear in the token ([`#3074`](https://github.com/polybar/polybar/issues/3074), [`#3087`](https://github.com/polybar/polybar/pull/3087)) by [@nklloyd](https://github.com/nklloyd)
 -  i3: Fix duplicated rendering for non-full-width bars ([`#3091`](https://github.com/polybar/polybar/pull/3091), [`#3060`](https://github.com/polybar/polybar/issues/3060))
 - `internal/backlight`: Module could display the literal `%percentage%` token if the backlight reports a value of 0 at startup ([`#3081`](https://github.com/polybar/polybar/pull/3081)) by [@unclechu](https://github.com/unclechu)
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 8e04f15e (fix(backlight): %backlight% token appearing on the bar (#3081))
-=======
-- `internal/tray`: Fix crash during restarting, when tray icons were not removed proberly ([`#3111`](https://github.com/polybar/polybar/issues/3111), [`#3112`](https://github.com/polybar/polybar/pull/3112))
-<<<<<<< HEAD
->>>>>>> ab583b08 (fix(tray): Clients not being removed properly)
-=======
-- `custom/ipc`: Module would display the literal `%output%` token before the initial hook finished executing ([`#3131`](https://github.com/polybar/polybar/issues/3131), [`#3140`](https://github.com/polybar/polybar/pull/3140))
-<<<<<<< HEAD
->>>>>>> 4d175845 (fix(ipc): Clear output until initial hook finishes)
-=======
-- renderer: Pseudo-transparency rendering artifacts when wallpaper does not fill entire screen ([`#3096`](https://github.com/polybar/polybar/pull/3096), [`#3041`](https://github.com/polybar/polybar/issues/3041))
->>>>>>> c0d3d7a3 (fix(render): Deal with incomplete wallpapers)
-=======
 - `internal/tray`: Fix crash during restarting, when tray icons were not removed proberly ([`#3111`](https://github.com/polybar/polybar/issues/3111), [`#3112`](https://github.com/polybar/polybar/pull/3112))
 - `custom/ipc`: Module would display the literal `%output%` token before the initial hook finished executing ([`#3131`](https://github.com/polybar/polybar/issues/3131), [`#3140`](https://github.com/polybar/polybar/pull/3140))
 - renderer: Pseudo-transparency rendering artifacts when wallpaper does not fill entire screen ([`#3096`](https://github.com/polybar/polybar/pull/3096), [`#3041`](https://github.com/polybar/polybar/issues/3041))
->>>>>>> 1ba083cdb2ee5516457b8a643104509d0746bf74
+- `internal/tray`: Fix crash during restarting, when tray icons were not removed proberly ([`#3111`](https://github.com/polybar/polybar/issues/3111), [`#3112`](https://github.com/polybar/polybar/pull/3112))
+- `custom/ipc`: Module would display the literal `%output%` token before the initial hook finished executing ([`#3131`](https://github.com/polybar/polybar/issues/3131), [`#3140`](https://github.com/polybar/polybar/pull/3140))
+- renderer: Pseudo-transparency rendering artifacts when wallpaper does not fill entire screen ([`#3096`](https://github.com/polybar/polybar/pull/3096), [`#3041`](https://github.com/polybar/polybar/issues/3041))
+
 
 ## [3.7.1] - 2023-11-27
 ### Build
