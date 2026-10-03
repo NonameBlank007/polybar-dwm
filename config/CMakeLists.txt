@@ -2,7 +2,7 @@
 # Generate configuration file
 #
 
-set(MODULES_LEFT "bspwm;i3")
+set(MODULES_LEFT "bspwm;i3;dwm")
 set(MODULES_CENTER "mpd")
 set(MODULES_RIGHT "filesystem;backlight-acpi;alsa;pulseaudio;xkeyboard;memory;cpu;wlan;eth;battery;temperature;date;powermenu")
 
