@@ -8,5 +8,5 @@
 	branch = master
 [submodule "lib/dwmipcpp"]
 	path = lib/dwmipcpp
-	url = https://github.com/mihirlad55/dwmipcpp
+	url = https://github.com/nonameblank007/dwmipcpp
     branch = master
