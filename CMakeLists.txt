@@ -90,9 +90,7 @@ if(BUILD_TESTS)
 endif()
 
 if(BUILD_CONFIG)
-  install(FILES ${CMAKE_SOURCE_DIR}/doc/config.ini
-    DESTINATION ${CMAKE_INSTALL_FULL_SYSCONFDIR}/${PROJECT_NAME}
-    COMPONENT config)
+  add_subdirectory(config)
 endif()
 
 include(05-summary)

@@ -66,7 +66,7 @@ likely be merge conflicts. The IPC patch is mostly additive, so in most conflict
 cases, you will be keeping both changes.
 
 After applying all your patches, make sure you compile and install dwm
-```
+```sh
 $ sudo make install
 ```
 
@@ -80,14 +80,36 @@ package from the AUR.
 Otherwise you can clone, make, and install polybar yourself. Follow the on
 screen prompts in the `build.sh` script and enable any additional features you
 want.
-```
-$ git clone https://github.com/mihirlad55/polybar-dwm-module
-$ cd polybar-dwm-module
+```sh
+$ git clone https://github.com/nonameblank007/polybar-dwm
+$ cd polybar-dwm
 $ ./build.sh -d
 ```
+You can pass `-C` (or `--install-config`) to automatically install the generated configuration to `~/.config/polybar/config.ini`.
 
-Configure the bar!  You can view `/usr/share/doc/polybar/config` for a sample config that
-includes the supported settings for the dwm module.
+### Manual Build with CMake
+Alternatively, you can build manually using CMake:
+```sh
+$ mkdir build && cd build
+$ cmake ..
+$ make
+$ sudo make install
+```
+
+#### Install the User Configuration
+To install the generated user configuration (`config.ini`) to `$XDG_CONFIG_HOME/polybar/config.ini` (or `~/.config/polybar/config.ini`), run inside the build directory:
+```sh
+$ make userconfig
+```
+> **Note:** This will install `config.ini` to your polybar config directory.
+
+#### Configuration Locations
+Polybar searches for configuration files in the following order:
+* `$XDG_CONFIG_HOME/polybar/config.ini` (or `~/.config/polybar/config.ini`)
+* `$XDG_CONFIG_DIRS/polybar/config.ini` (or `/etc/xdg/polybar/config.ini`)
+* `/etc/polybar/config.ini` (installed system default, generated from `config.cmake`)
+
+You can also find an example configuration reference installed to `/usr/share/doc/polybar/examples/config.ini` (or `/usr/local/share/doc/polybar/examples/config.ini`).
 
 **IF YOU APPLIED THE ANYBAR PATCH**, make sure you have
 `override-redirect = false` in your polybar config.
