@@ -15,7 +15,9 @@ queryfont(FONT_UNIFONT ${FONT_UNIFONT} FIELDS family fontformat)
 queryfont(FONT_SIJI ${FONT_SIJI} FIELDS family pixelsize)
 
 # Strip disabled modules {{{
-
+if(ENABLE_DWM OR ENABLE_I3)
+  list (REMOVE_ITEM MODULES_LEFT "bspwm")
+endif()
 if(NOT ENABLE_PULSEAUDIO)
   list(REMOVE_ITEM MODULES_RIGHT "pulseaudio")
 endif()
