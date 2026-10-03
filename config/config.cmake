@@ -67,6 +67,7 @@ tray-padding = 2
 ;wm-restack = i3
 
 ;override-redirect = true
+enable-hover = true
 
 ;scroll-up = bspwm-desknext
 ;scroll-down = bspwm-deskprev
@@ -331,8 +332,9 @@ format-disconnected =
 [module/date]
 type = internal/date
 interval = 5
+format = %{A9:#date.toggle:}%{A10:#date.toggle:}<label>%{A9 A10}
 
-date =
+date = %a %d %b
 date-alt = " %Y-%m-%d"
 
 time = %H:%M
