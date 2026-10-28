@@ -10,7 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Native inline image formatting tag `%{I[<width>x<height>][r<radius>]:<path>}%` with Cairo surface caching and rounded corner clipping.
+- Cursor hover actions `%{A9:...}%` (hover start) and `%{A10:...}%` (hover end) with `enable-hover = true` bar option.
 - An option `unmute-on-scroll` for `internal/pulseaudio` and `internal/alsa` to unmute audio when the user scrolls on the widget.
+
+### Fixed
+- Fixed docutils substitution target errors in `doc/user/modules/defs.rst`.
 
 ## [3.7.2] - 2024-08-17
 ### Added
