@@ -131,6 +131,7 @@ namespace tags {
     std::pair<action_value, string> parse_action();
     mousebtn parse_action_btn();
     string parse_action_cmd();
+    std::pair<image_value, string> parse_image();
     attribute parse_attribute();
 
     void push_char(char c);

@@ -12,6 +12,7 @@ class renderer_interface {
 
   virtual void render_offset(const tags::context& ctxt, const extent_val offset) = 0;
   virtual void render_text(const tags::context& ctxt, const string&& str) = 0;
+  virtual void render_image(const tags::context& ctxt, const string& path, double w, double h, double radius) = 0;
   virtual void change_alignment(const tags::context& ctxt) = 0;
 
   /**

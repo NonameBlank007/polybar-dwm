@@ -25,6 +25,7 @@ namespace tags {
     l, // Left alignment
     r, // Right alignment
     c, // Center alignment
+    I, // Image render
   };
 
   /**
@@ -64,6 +65,12 @@ namespace tags {
     bool closing;
   };
 
+  struct image_value {
+    extent_val width{ZERO_PX_EXTENT};
+    extent_val height{ZERO_PX_EXTENT};
+    extent_val radius{ZERO_PX_EXTENT};
+  };
+
   enum class tag_type { ATTR, FORMAT };
 
   union tag_subtype {
@@ -100,6 +107,10 @@ namespace tags {
        * For attribute activations ((-|+|!)(o|u))
        */
       attribute attr;
+      /**
+       * For 'I' tags
+       */
+      image_value image;
     };
   };
 

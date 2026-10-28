@@ -62,6 +62,7 @@ class renderer : public renderer_interface,
 
   void render_offset(const tags::context& ctxt, const extent_val offset) override;
   void render_text(const tags::context& ctxt, const string&&) override;
+  void render_image(const tags::context& ctxt, const string& path, double w, double h, double radius) override;
 
   void change_alignment(const tags::context& ctxt) override;
 
@@ -136,6 +137,14 @@ class renderer : public renderer_interface,
 
   bool m_fixedcenter;
   string m_snapshot_dst;
+
+  struct image_cache_entry {
+    cairo_surface_t* surface{nullptr};
+    time_t mtime{0};
+    int orig_w{0};
+    int orig_h{0};
+  };
+  map<string, image_cache_entry> m_image_cache;
 };
 
 POLYBAR_NS_END

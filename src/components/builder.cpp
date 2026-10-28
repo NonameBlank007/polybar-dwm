@@ -401,6 +401,9 @@ void builder::tag_open(syntaxtag tag, const string& value) {
     case syntaxtag::r:
       append("%{r}");
       break;
+    case syntaxtag::I:
+      append("%{I" + value + "}");
+      break;
     default:
       throw runtime_error("Invalid tag: " + to_string(to_integral(tag)));
   }

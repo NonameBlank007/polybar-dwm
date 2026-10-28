@@ -221,6 +221,7 @@ namespace tags {
       case 'l': sub.format = syntaxtag::l; break;
       case 'c': sub.format = syntaxtag::c; break;
       case 'r': sub.format = syntaxtag::r; break;
+      case 'I': sub.format = syntaxtag::I; break;
 
       case '+': sub.activation = attr_activation::ON; break;
       case '-': sub.activation = attr_activation::OFF; break;
@@ -245,6 +246,7 @@ namespace tags {
       case 'l':
       case 'c':
       case 'r':
+      case 'I':
         type = tag_type::FORMAT;
         break;
 
@@ -283,6 +285,9 @@ namespace tags {
         break;
       case 'A':
         std::tie(tag_data.action, e.data) = parse_action();
+        break;
+      case 'I':
+        std::tie(tag_data.image, e.data) = parse_image();
         break;
 
       case '+':
@@ -394,6 +399,46 @@ namespace tags {
     }
 
     return {ret, cmd};
+  }
+
+  std::pair<image_value, string> parser::parse_image() {
+    image_value val{};
+    string raw = get_tag_value();
+
+    size_t colon = raw.find(':');
+    string path;
+    if (colon != string::npos) {
+      string opts = raw.substr(0, colon);
+      path = raw.substr(colon + 1);
+
+      float w = 0, h = 0, r = 0;
+      size_t r_pos = opts.find('r');
+      if (r_pos != string::npos) {
+        try {
+          r = std::stof(opts.substr(r_pos + 1));
+        } catch (...) {}
+        opts = opts.substr(0, r_pos);
+      }
+      size_t x_pos = opts.find('x');
+      if (x_pos != string::npos) {
+        try {
+          w = std::stof(opts.substr(0, x_pos));
+          h = std::stof(opts.substr(x_pos + 1));
+        } catch (...) {}
+      } else if (!opts.empty()) {
+        try {
+          w = std::stof(opts);
+          h = w;
+        } catch (...) {}
+      }
+      val.width = {extent_type::PIXEL, w};
+      val.height = {extent_type::PIXEL, h};
+      val.radius = {extent_type::PIXEL, r};
+    } else {
+      path = raw;
+    }
+
+    return {val, path};
   }
 
   /**

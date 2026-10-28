@@ -86,6 +86,9 @@ namespace tags {
               case tags::syntaxtag::c:
                 handle_alignment(renderer, alignment::CENTER);
                 break;
+              case tags::syntaxtag::I:
+                renderer.render_image(*m_ctxt, el.data, el.tag_data.image.width.value, el.tag_data.image.height.value, el.tag_data.image.radius.value);
+                break;
               default:
                 throw runtime_error(
                     "Unrecognized tag format: " + to_string(static_cast<int>(el.tag_data.subtype.format)));

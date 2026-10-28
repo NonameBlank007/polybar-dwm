@@ -1,6 +1,8 @@
 #include "components/renderer.hpp"
 
 #include <cassert>
+#include <cmath>
+#include <sys/stat.h>
 
 #include "cairo/context.hpp"
 #include "components/config.hpp"
@@ -155,6 +157,12 @@ renderer::renderer(connection& conn, signal_emitter& sig, const config& conf, co
  */
 renderer::~renderer() {
   m_sig.detach(this);
+  for (auto& entry : m_image_cache) {
+    if (entry.second.surface) {
+      cairo_surface_destroy(entry.second.surface);
+      entry.second.surface = nullptr;
+    }
+  }
 }
 
 /**
@@ -733,6 +741,100 @@ void renderer::render_text(const tags::context& ctxt, const string&& contents) {
     if (ctxt.has_overline()) {
       fill_overline(ctxt.get_ol(), origin.x, dx);
     }
+  }
+}
+
+/**
+ * Draw image contents (img with optional scaling and rounded corners)
+ */
+void renderer::render_image(const tags::context& ctxt, const string& path, double w, double h, double radius) {
+  assert(ctxt.get_alignment() != alignment::NONE && ctxt.get_alignment() == m_align);
+  m_log.trace_x("renderer: image(%s, w=%.1f, h=%.1f, r=%.1f)", path.c_str(), w, h, radius);
+
+  if (path.empty()) {
+    return;
+  }
+
+  struct stat st{};
+  if (stat(path.c_str(), &st) != 0) {
+    m_log.trace_x("renderer: image not found (%s)", path.c_str());
+    return;
+  }
+
+  auto it = m_image_cache.find(path);
+  cairo_surface_t* surf = nullptr;
+  int orig_w = 0;
+  int orig_h = 0;
+
+  if (it != m_image_cache.end() && it->second.mtime == st.st_mtime && it->second.surface) {
+    surf = it->second.surface;
+    orig_w = it->second.orig_w;
+    orig_h = it->second.orig_h;
+  } else {
+    if (it != m_image_cache.end() && it->second.surface) {
+      cairo_surface_destroy(it->second.surface);
+      m_image_cache.erase(it);
+    }
+
+    surf = cairo_image_surface_create_from_png(path.c_str());
+    if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
+      m_log.trace_x("renderer: failed to load png image (%s): %s", path.c_str(),
+                    cairo_status_to_string(cairo_surface_status(surf)));
+      cairo_surface_destroy(surf);
+      return;
+    }
+
+    orig_w = cairo_image_surface_get_width(surf);
+    orig_h = cairo_image_surface_get_height(surf);
+    if (orig_w <= 0 || orig_h <= 0) {
+      cairo_surface_destroy(surf);
+      return;
+    }
+
+    m_image_cache[path] = {surf, st.st_mtime, orig_w, orig_h};
+  }
+
+  double draw_h = h;
+  double draw_w = w;
+
+  if (draw_h <= 0.0) {
+    draw_h = std::max(4.0, (double)m_rect.height - 6.0);
+  }
+
+  if (draw_w <= 0.0) {
+    draw_w = ((double)orig_w / (double)orig_h) * draw_h;
+  }
+
+  double origin_x = m_rect.x + m_blocks[m_align].x;
+  double origin_y = m_rect.y + (m_rect.height - draw_h) / 2.0;
+
+  m_context->save();
+
+  if (radius > 0.0) {
+    double r = std::min(radius, std::min(draw_w, draw_h) / 2.0);
+    cairo_new_sub_path(*m_context);
+    cairo_arc(*m_context, origin_x + draw_w - r, origin_y + r, r, -M_PI / 2.0, 0);
+    cairo_arc(*m_context, origin_x + draw_w - r, origin_y + draw_h - r, r, 0, M_PI / 2.0);
+    cairo_arc(*m_context, origin_x + r, origin_y + draw_h - r, r, M_PI / 2.0, M_PI);
+    cairo_arc(*m_context, origin_x + r, origin_y + r, r, M_PI, 3.0 * M_PI / 2.0);
+    cairo_close_path(*m_context);
+    cairo_clip(*m_context);
+  }
+
+  cairo_translate(*m_context, origin_x, origin_y);
+  cairo_scale(*m_context, draw_w / (double)orig_w, draw_h / (double)orig_h);
+  cairo_set_source_surface(*m_context, surf, 0.0, 0.0);
+  cairo_paint(*m_context);
+
+  m_context->restore();
+
+  increase_x(draw_w);
+
+  if (ctxt.has_underline()) {
+    fill_underline(ctxt.get_ul(), origin_x, draw_w);
+  }
+  if (ctxt.has_overline()) {
+    fill_overline(ctxt.get_ol(), origin_x, draw_w);
   }
 }
 
