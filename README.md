@@ -44,6 +44,33 @@ The dwm module currently supports the following:
     * Empty: Unselected and unoccupied tags
 - The combined power of polybar
 
+## Extended Polybar Features
+This fork includes enhancements to core Polybar formatting and interactivity:
+
+### 1. Native Inline Image Tag (`%{I...}%`)
+Render local PNG images (such as album covers, custom icons, or avatars) directly inside any module format string:
+* Syntax: `%{I[<width>x<height>][r<radius>]:<path>}%`
+* **Examples**:
+  * `%{I24x24r4:/tmp/polybar-music/cover.png}%` (24x24 pixels with 4px rounded corners)
+  * `%{I20x20:/path/to/icon.png}%` (20x20 pixels, square)
+  * `%{I:/path/to/icon.png}%` (native image dimensions)
+* **Performance**: Surfaces are cached in memory and re-rendered only when file `mtime` updates.
+
+### 2. Cursor Hover Events (`%{A9:...}%` and `%{A10:...}%`)
+Trigger commands or IPC actions when the mouse cursor enters or leaves any module or text span:
+* Enable hover tracking in your bar configuration:
+  ```ini
+  [bar/example]
+  enable-hover = true
+  ```
+* Action buttons:
+  * `9`: Cursor hover enter / start
+  * `10`: Cursor hover leave / end
+* **Example**:
+  ```ini
+  format = %{A9:#music.hover_on:}%{A10:#music.hover_off:}<label>%{A10}%{A9}
+  ```
+
 
 ## How to Install
 First, apply all the patches you want on dwm, saving the IPC patch for last.
