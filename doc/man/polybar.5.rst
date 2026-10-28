@@ -164,6 +164,34 @@ not affect polybar's behavior. Comment lines start with either the ``;`` or the
 
     name = value ; comment
 
+Formatting Tags
+---------------
+
+Polybar supports inline formatting tags inside module labels and format strings:
+
+* ``%{F<color>}...%{F-}``: Set foreground color (reset with ``%{F-}``).
+* ``%{B<color>}...%{B-}``: Set background color (reset with ``%{B-}``).
+* ``%{u<color>}...%{u-}``: Set underline color.
+* ``%{o<color>}...%{o-}``: Set overline color.
+* ``%{+u}`` / ``%{-u}``: Enable / disable underline.
+* ``%{+o}`` / ``%{-o}``: Enable / disable overline.
+* ``%{T<index>}``: Switch font (1-indexed).
+* ``%{O<pixels>}``: Offset position horizontally.
+* ``%{A<button>:<command>:}...%{A}``: Click / scroll / hover action:
+  * ``1``: Left click
+  * ``2``: Middle click
+  * ``3``: Right click
+  * ``4``: Scroll up
+  * ``5``: Scroll down
+  * ``6``: Double left click
+  * ``7``: Double middle click
+  * ``8``: Double right click
+  * ``9``: Hover enter (requires ``enable-hover = true`` in bar section)
+  * ``10``: Hover leave (requires ``enable-hover = true`` in bar section)
+* ``%{I[<width>x<height>][r<radius>]:<path>}%``: Inline PNG image tag:
+  Renders an image from file path with optional dimensions and corner radius.
+  Example: ``%{I20x20r4:/tmp/cover.png}%`` renders a 20x20 image with 4px rounded corners.
+
 AUTHORS
 -------
 | Polybar was created by Michael Carlberg and is currently maintained by Patrick Ziegler.

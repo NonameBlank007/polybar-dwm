@@ -101,6 +101,25 @@ just as we would regular commands:
   %{A1:firefox:}%{A3:#mydate.toggle:}Opens firefox on left-click and toggles the
   date on right-click %{A}%{A}
 
+Button numbers used in ``%{A<btn>:...}%``:
+
+* ``1``: Left click
+* ``2``: Middle click
+* ``3``: Right click
+* ``4``: Scroll up
+* ``5``: Scroll down
+* ``6``: Double left click
+* ``7``: Double middle click
+* ``8``: Double right click
+* ``9``: Hover enter / start (requires ``enable-hover = true`` in bar section)
+* ``10``: Hover leave / end (requires ``enable-hover = true`` in bar section)
+
+For example, to execute a command or trigger an action on hover:
+
+::
+
+  %{A9:#mymodule.hover_on:}%{A10:#mymodule.hover_off:}Hoverable Text%{A10}%{A9}
+
 Finally, polybar's `Inter Process Communication
 <https://github.com/polybar/polybar/wiki/Inter-process-messaging>`_ (IPC) can
 also be used to trigger actions:
