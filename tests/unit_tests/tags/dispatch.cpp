@@ -41,6 +41,11 @@ class FakeRenderer : public renderer_interface {
     block_x[ctxt.get_alignment()] += str.size();
   };
 
+  void render_image(const tags::context& ctxt, const string& /*path*/, double w, double /*h*/, double /*radius*/) override {
+    EXPECT_NE(alignment::NONE, ctxt.get_alignment());
+    block_x[ctxt.get_alignment()] += w;
+  };
+
   void change_alignment(const tags::context& ctxt) override {
     EXPECT_NE(alignment::NONE, ctxt.get_alignment());
   };
@@ -70,6 +75,7 @@ class MockRenderer : public renderer_interface {
 
   MOCK_METHOD(void, render_offset, (const context& ctxt, const extent_val offset), (override));
   MOCK_METHOD(void, render_text, (const context& ctxt, const string&& str), (override));
+  MOCK_METHOD(void, render_image, (const context& ctxt, const string& path, double w, double h, double radius), (override));
   MOCK_METHOD(void, change_alignment, (const context& ctxt), (override));
   MOCK_METHOD(double, get_x, (const context& ctxt), (const, override));
   MOCK_METHOD(double, get_alignment_start, (const alignment align), (const, override));
@@ -82,6 +88,10 @@ class MockRenderer : public renderer_interface {
 
     ON_CALL(*this, render_text).WillByDefault([this](const context& ctxt, const string&& str) {
       fake.render_text(ctxt, std::forward<const string>(str));
+    });
+
+    ON_CALL(*this, render_image).WillByDefault([this](const context& ctxt, const string& path, double w, double h, double radius) {
+      fake.render_image(ctxt, path, w, h, radius);
     });
 
     ON_CALL(*this, get_x).WillByDefault([this](const context& ctxt) { return fake.get_x(ctxt); });
@@ -267,4 +277,16 @@ TEST_F(DispatchTest, actionOffsetBefore) {
   EXPECT_EQ(alignment::LEFT, blk.align);
   EXPECT_EQ(mousebtn::LEFT, blk.button);
   EXPECT_EQ("cmd", blk.cmd);
+}
+
+TEST_F(DispatchTest, renderImage) {
+  {
+    InSequence seq;
+    EXPECT_CALL(r, change_alignment(match_left_align)).Times(1);
+    EXPECT_CALL(r, render_image(match_left_align, "/path/to/img.png", 20.0, 20.0, 4.0)).Times(1);
+    EXPECT_CALL(r, render_text(match_left_align, string{"foo"})).Times(1);
+  }
+
+  bar_settings settings;
+  m_dispatch->parse(settings, r, "%{l}%{I20x20r4:/path/to/img.png}foo");
 }

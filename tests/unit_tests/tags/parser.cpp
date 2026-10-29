@@ -112,6 +112,18 @@ class TestableTagParser : public parser {
     assert_format(syntaxtag::R);
   }
 
+  void expect_image(float w, float h, float r, const string& path) {
+    set_current();
+    assert_format(syntaxtag::I);
+    EXPECT_EQ(extent_type::PIXEL, current.tag_data.image.width.type);
+    EXPECT_EQ(w, current.tag_data.image.width.value);
+    EXPECT_EQ(extent_type::PIXEL, current.tag_data.image.height.type);
+    EXPECT_EQ(h, current.tag_data.image.height.value);
+    EXPECT_EQ(extent_type::PIXEL, current.tag_data.image.radius.type);
+    EXPECT_EQ(r, current.tag_data.image.radius.value);
+    EXPECT_EQ(path, current.data);
+  }
+
  private:
   void assert_format(syntaxtag exp) {
     assert_type(tag_type::FORMAT);
@@ -377,6 +389,28 @@ TEST_F(TagParserTest, alignment) {
 TEST_F(TagParserTest, ctrl) {
   p.setup_parser_test("%{PR}");
   p.expect_ctrl(controltag::R);
+  p.expect_done();
+}
+
+TEST_F(TagParserTest, image) {
+  p.setup_parser_test("%{I:/path/to/img.png}");
+  p.expect_image(0, 0, 0, "/path/to/img.png");
+  p.expect_done();
+
+  p.setup_parser_test("%{I32:/path/to/img.png}");
+  p.expect_image(32, 32, 0, "/path/to/img.png");
+  p.expect_done();
+
+  p.setup_parser_test("%{I24x16:/path/to/img.png}");
+  p.expect_image(24, 16, 0, "/path/to/img.png");
+  p.expect_done();
+
+  p.setup_parser_test("%{I20x20r4:/path/to/img.png}");
+  p.expect_image(20, 20, 4, "/path/to/img.png");
+  p.expect_done();
+
+  p.setup_parser_test("%{Ir5:/path/to/img.png}");
+  p.expect_image(0, 0, 5, "/path/to/img.png");
   p.expect_done();
 }
 
