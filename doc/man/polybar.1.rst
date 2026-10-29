@@ -80,12 +80,14 @@ SEE ALSO
 .. only:: man
 
   :manpage:`polybar-msg`\(1),
+  :manpage:`polybar-spotify-setup`\(1),
   :manpage:`polybar`\(5)
 
 
 .. only:: not man
 
   :doc:`polybar-msg.1`,
+  :doc:`polybar-spotify-setup.1`,
   :doc:`polybar.5`
 
 | Full documentation at: <https://github.com/polybar/polybar>

@@ -25,6 +25,7 @@ Welcome to the official polybar documentation.
 
    man/polybar.1
    man/polybar-msg.1
+   man/polybar-spotify-setup.1
    man/polybar.5
 
 .. toctree::

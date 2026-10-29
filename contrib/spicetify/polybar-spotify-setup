@@ -12,7 +12,21 @@ from pathlib import Path
 
 EXTENSION_NAME = "polybar-lyrics.js"
 
+def show_help():
+    print("""Usage: polybar-spotify-setup [OPTIONS]
+
+Install and configure the Polybar lyrics integration extension for Spicetify.
+
+Options:
+  -h, --help       Show this help message and exit
+  -u, --uninstall  Disable and remove the extension from Spicetify
+""")
+
 def main():
+    if "-h" in sys.argv or "--help" in sys.argv:
+        show_help()
+        sys.exit(0)
+
     spicetify = shutil.which("spicetify")
     if not spicetify:
         print("Error: Spicetify is not installed or not in PATH.", file=sys.stderr)
@@ -22,15 +36,38 @@ def main():
     config_file = Path(result.stdout.strip())
     extensions_dir = config_file.parent / "Extensions"
     extensions_dir.mkdir(parents=True, exist_ok=True)
+    target_file = extensions_dir / EXTENSION_NAME
 
-    script_source = Path(__file__).resolve().parent / EXTENSION_NAME
-    if not script_source.exists():
-        script_source = Path.home() / ".config/polybar/scripts" / EXTENSION_NAME
-    if not script_source.exists():
-        print(f"Error: {EXTENSION_NAME} not found at {script_source}", file=sys.stderr)
+    if "-u" in sys.argv or "--uninstall" in sys.argv:
+        print("Disabling extension in Spicetify...")
+        subprocess.run([spicetify, "config", "extensions", f"{EXTENSION_NAME}-"], check=False)
+        if target_file.exists():
+            target_file.unlink()
+            print(f"Removed {target_file}")
+        print("Applying Spicetify changes...")
+        subprocess.run([spicetify, "apply"], check=True)
+        print("✓ Polybar Spotify lyrics extension uninstalled successfully.")
+        sys.exit(0)
+
+    candidates = [
+        Path(__file__).resolve().parent / EXTENSION_NAME,
+        Path("/usr/local/share/polybar/spicetify") / EXTENSION_NAME,
+        Path("/usr/share/polybar/spicetify") / EXTENSION_NAME,
+        Path.home() / ".local/share/polybar/spicetify" / EXTENSION_NAME,
+        Path.home() / ".config/polybar/scripts" / EXTENSION_NAME,
+    ]
+    script_source = None
+    for cand in candidates:
+        if cand.exists():
+            script_source = cand
+            break
+
+    if not script_source:
+        print(f"Error: {EXTENSION_NAME} not found in candidate paths:", file=sys.stderr)
+        for cand in candidates:
+            print(f"  - {cand}", file=sys.stderr)
         sys.exit(1)
 
-    target_file = extensions_dir / EXTENSION_NAME
     shutil.copy2(script_source, target_file)
     print(f"Copied {EXTENSION_NAME} to {target_file}")
 

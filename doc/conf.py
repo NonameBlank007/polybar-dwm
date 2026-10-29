@@ -233,6 +233,10 @@ man_pages = [
         'Send IPC messages to polybar', [], 1
     ),
     (
+        'man/polybar-spotify-setup.1', 'polybar-spotify-setup',
+        'Set up Spicetify Spotify lyrics bridge for polybar', [], 1
+    ),
+    (
         'man/polybar.5', 'polybar',
         'configuration file for polybar(1)', [], 5
     )
