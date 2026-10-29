@@ -9,16 +9,20 @@
     let disposed = false;
     let lastUri = "";
     let checkInterval = null;
+    let inFlightId = "";
 
     async function sendLyrics(uri) {
         if (!uri || uri === lastUri) return;
         lastUri = uri;
         const id = uri.split(":")[2];
         if (!id) return;
+        inFlightId = id;
 
         try {
             const baseURL = "https://spclient.wg.spotify.com/color-lyrics/v2/track/";
             const resp = await Spicetify.CosmosAsync.get(`${baseURL + id}?format=json&vocalRemoval=false&market=from_token`);
+            if (disposed || inFlightId !== id) return;
+
             if (resp && resp.lyrics && resp.lyrics.lines) {
                 const lines = resp.lyrics.lines.map(l => ({
                     time: (l.startTimeMs || 0) / 1000,
@@ -42,6 +46,7 @@
                 }).catch(() => {});
             }
         } catch (e) {
+            if (disposed || inFlightId !== id) return;
             fetch("http://127.0.0.1:8974/lyrics", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -50,27 +55,36 @@
         }
     }
 
-    function onSongChange() {
+    function checkAndSend(immediateUri) {
         if (disposed) return;
-        const item = Spicetify.Player.data?.item;
-        if (item?.uri) {
-            void sendLyrics(item.uri);
+        const uri = immediateUri || Spicetify.Player.data?.item?.uri;
+        if (uri && uri !== lastUri) {
+            void sendLyrics(uri);
         }
+    }
+
+    function onSongChange(event) {
+        if (disposed) return;
+        const uri = event?.data?.item?.uri || event?.data?.track?.uri || Spicetify.Player.data?.item?.uri;
+        checkAndSend(uri);
+        setTimeout(() => checkAndSend(), 50);
+        setTimeout(() => checkAndSend(), 150);
+        setTimeout(() => checkAndSend(), 350);
     }
 
     function init() {
         if (!globalThis.Spicetify?.Player?.addEventListener || !globalThis.Spicetify?.CosmosAsync) {
-            setTimeout(init, 500);
+            setTimeout(init, 200);
             return;
         }
 
         Spicetify.Player.addEventListener("songchange", onSongChange);
+        Spicetify.Player.addEventListener("playerstatechange", onSongChange);
+        Spicetify.Player.addEventListener("onplaypause", onSongChange);
+
         checkInterval = setInterval(() => {
-            const item = Spicetify.Player.data?.item;
-            if (item?.uri && item.uri !== lastUri) {
-                void sendLyrics(item.uri);
-            }
-        }, 1500);
+            checkAndSend();
+        }, 250);
 
         onSongChange();
     }
@@ -80,6 +94,8 @@
             disposed = true;
             if (checkInterval) clearInterval(checkInterval);
             globalThis.Spicetify?.Player?.removeEventListener?.("songchange", onSongChange);
+            globalThis.Spicetify?.Player?.removeEventListener?.("playerstatechange", onSongChange);
+            globalThis.Spicetify?.Player?.removeEventListener?.("onplaypause", onSongChange);
         }
     };
 
