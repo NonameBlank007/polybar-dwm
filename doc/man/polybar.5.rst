@@ -188,9 +188,21 @@ Polybar supports inline formatting tags inside module labels and format strings:
   * ``8``: Double right click
   * ``9``: Hover enter (requires ``enable-hover = true`` in bar section)
   * ``10``: Hover leave (requires ``enable-hover = true`` in bar section)
-* ``%{I[<width>x<height>][r<radius>]:<path>}%``: Inline PNG image tag:
-  Renders an image from file path with optional dimensions and corner radius.
-  Example: ``%{I20x20r4:/tmp/cover.png}%`` renders a 20x20 image with 4px rounded corners.
+* ``%{I[<options>]:<path>}%``: Inline Cairo PNG image tag:
+  Renders a PNG image from file path directly onto the bar surface using Cairo.
+  The image is vertically centered within the bar height and supports full alpha transparency (ARGB32).
+
+  **Options** (specified before the colon ``:``):
+
+  * ``<width>x<height>``: Target dimensions in pixels (e.g. ``20x20``). If only width or height is provided, the original image aspect ratio is preserved automatically.
+  * ``r<radius>``: Rounded corner radius in pixels (e.g. ``r4``). If ``radius >= width / 2``, the image renders as a smooth pill or capsule.
+  * No options (``%{I:<path>}%``): Renders the image at its natural dimensions, scaled proportionally to fit the bar height.
+
+  **Examples**:
+
+  * ``%{I20x20r4:/tmp/cover.png}%``: Renders a 20x20 pixel cover art thumbnail with 4px rounded corners.
+  * ``%{I27x18r0:/tmp/cava_0.png}%``: Renders an 18px tall dynamic audio visualizer surface.
+  * ``%{I32x32:/path/to/icon.png}%``: Scales image to 32x32 pixels preserving alpha transparency.
 
 AUTHORS
 -------
