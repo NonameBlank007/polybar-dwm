@@ -70,7 +70,10 @@ Trigger commands or IPC actions when the mouse cursor enters or leaves any modul
   ```ini
   format = %{A9:#music.hover_on:}%{A10:#music.hover_off:}<label>%{A10}%{A9}
   ```
-
+### 3. Spotify intigration through spicetify
+polybar-spotify-setup installs and configures the Polybar lyrics integration extension for Spicetify.
+* Install it by running `polybar-spotify-setup` in terminal.
+* For usage `polybar-spotify-setup -h`
 
 ## How to Install
 First, apply all the patches you want on dwm, saving the IPC patch for last.
