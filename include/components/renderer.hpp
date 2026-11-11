@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cairo/cairo.h>
+#include <sys/types.h>
 
 #include <bitset>
 #include <memory>
@@ -141,6 +142,9 @@ class renderer : public renderer_interface,
   struct image_cache_entry {
     cairo_surface_t* surface{nullptr};
     time_t mtime{0};
+    long mtime_nsec{0};
+    off_t size{0};
+    ino_t ino{0};
     int orig_w{0};
     int orig_h{0};
   };

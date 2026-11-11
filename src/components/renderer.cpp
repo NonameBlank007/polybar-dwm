@@ -766,7 +766,9 @@ void renderer::render_image(const tags::context& ctxt, const string& path, doubl
   int orig_w = 0;
   int orig_h = 0;
 
-  if (it != m_image_cache.end() && it->second.mtime == st.st_mtime && it->second.surface) {
+  if (it != m_image_cache.end() && it->second.mtime == st.st_mtime &&
+      it->second.mtime_nsec == st.st_mtim.tv_nsec && it->second.size == st.st_size &&
+      it->second.ino == st.st_ino && it->second.surface) {
     surf = it->second.surface;
     orig_w = it->second.orig_w;
     orig_h = it->second.orig_h;
@@ -791,7 +793,7 @@ void renderer::render_image(const tags::context& ctxt, const string& path, doubl
       return;
     }
 
-    m_image_cache[path] = {surf, st.st_mtime, orig_w, orig_h};
+    m_image_cache[path] = {surf, st.st_mtime, st.st_mtim.tv_nsec, st.st_size, st.st_ino, orig_w, orig_h};
   }
 
   double draw_h = h;
